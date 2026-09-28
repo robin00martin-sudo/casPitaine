@@ -1,0 +1,261 @@
+:root {
+    --fond: #eef3f5;
+    --papier: #ffffff;
+    --encre: #10263a;
+    --encre-douce: #4a6072;
+    --trait: #c3d1d9;
+    --accent: #0d6a78;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--fond);
+    color: var(--encre);
+    font: 1rem/1.6 "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- Menu ---------- */
+
+.menu {
+    background: var(--encre);
+}
+
+.menu ul {
+    display: flex;
+    gap: 0.25rem;
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    list-style: none;
+}
+
+.menu a {
+    display: block;
+    padding: 0.85rem 1rem;
+    color: #cfdde5;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+}
+
+.menu a:hover,
+.menu a:focus-visible { color: #fff; }
+
+.menu a[aria-current="page"] {
+    color: #fff;
+    font-weight: 600;
+    border-bottom-color: #6fc7d3;
+}
+
+/* ---------- Page ---------- */
+
+.page {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+}
+
+.page > header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--encre);
+}
+
+h1 {
+    margin: 0;
+    font: 700 clamp(2rem, 5vw, 3.2rem)/1.1 Georgia, "Times New Roman", serif;
+    letter-spacing: -0.01em;
+}
+
+.sous-titre {
+    margin: 0.5rem 0 0;
+    color: var(--encre-douce);
+}
+
+/* ---------- Fiche d'un bateau ---------- */
+
+.bateau {
+    padding: 1.25rem;
+    background: var(--papier);
+    border: 1px solid var(--trait);
+    border-radius: 4px;
+    break-inside: avoid;
+}
+
+/* Bateaux voyageurs : image à gauche, détails à droite */
+.liste-voyageurs .bateau {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Bateaux de fret : grille de fiches sans image */
+.liste-fret {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1.5rem;
+}
+
+.bateau figure {
+    margin: 0;
+    min-height: 14rem;
+    background: var(--fond);
+}
+
+.bateau img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sans-image {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    min-height: 14rem;
+    color: var(--encre-douce);
+    font-size: 0.9rem;
+}
+
+h2 {
+    margin: 0 0 1rem;
+    font: 700 1.9rem/1.2 Georgia, "Times New Roman", serif;
+}
+
+dl {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    margin: 0 0 1.25rem;
+    border-top: 1px solid var(--trait);
+}
+
+.liste-fret dl { margin-bottom: 0; }
+
+dt, dd {
+    margin: 0;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--trait);
+}
+
+dt { color: var(--encre-douce); }
+dd { font-weight: 600; }
+
+h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+ul.equipements {
+    margin: 0;
+    padding-left: 1.2rem;
+    columns: 2 12rem;
+    column-gap: 2rem;
+}
+
+ul.equipements li { break-inside: avoid; }
+
+.message {
+    padding: 1rem 1.25rem;
+    background: var(--papier);
+    border-left: 4px solid var(--accent);
+}
+
+.message.erreur { border-left-color: #b3261e; }
+
+@media (max-width: 42rem) {
+    .liste-voyageurs .bateau { grid-template-columns: 1fr; gap: 1.25rem; }
+    dl { grid-template-columns: 7rem 1fr; }
+}
+
+@media print {
+    body { background: #fff; }
+    .menu { display: none; }
+}
+
+/* ---------- Formulaire d'ajout ---------- */
+
+.formulaire { max-width: 38rem; }
+
+.formulaire fieldset {
+    margin: 0 0 1.5rem;
+    padding: 1rem 1.25rem 0.5rem;
+    background: var(--papier);
+    border: 1px solid var(--trait);
+    border-radius: 4px;
+}
+
+.formulaire fieldset[hidden] { display: none; }
+
+.formulaire legend {
+    padding: 0 0.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.champ { margin-bottom: 1rem; }
+
+.champ label,
+.champ .etiquette {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.facultatif { font-weight: 400; color: var(--encre-douce); }
+
+.champ input[type="text"],
+.champ select {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: var(--encre);
+    background: #fff;
+    border: 1px solid var(--encre-douce);
+    border-radius: 3px;
+}
+
+.champ input[type="file"] { max-width: 100%; }
+
+.champ input:focus-visible,
+.champ select:focus-visible,
+.bouton:focus-visible {
+    outline: 3px solid #6fc7d3;
+    outline-offset: 1px;
+}
+
+.champ [aria-invalid="true"] { border-color: #b3261e; }
+
+.erreur-champ {
+    margin: 0.3rem 0 0;
+    color: #b3261e;
+    font-size: 0.92rem;
+}
+
+.cases {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 0.25rem 1rem;
+}
+
+.cases label { margin: 0; font-weight: 400; }
+
+.aide { margin: 0; color: var(--encre-douce); }
+
+.bouton {
+    padding: 0.7rem 1.5rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.bouton:hover { background: #0a5560; }
+
+.message.succes { border-left-color: #2e7d32; margin-bottom: 1.5rem; }
