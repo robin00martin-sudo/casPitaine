@@ -10,7 +10,8 @@
  * Les contrôleurs spécialisés sont chargés seulement quand on en a besoin :
  *   controleurvoyage : liste des bateaux voyageurs
  *   controleurfret   : liste des bateaux de fret
- *   controleurajout  : formulaire d'ajout d'un bateau
+ *   controleurajout  : formulaire d'ajout d'un bateau (réservé à l'administrateur)
+ *   controleurauth   : connexion / déconnexion de l'administrateur
  */
 class controleurPrincipal
 {
@@ -27,8 +28,17 @@ class controleurPrincipal
                 break;
 
             case 'ajout':
+                exigerAdmin('ajout');      // l'ajout est réservé à l'administrateur
                 require_once RACINE . '/Controleur/controleurajout.php';
                 controleurajout::ajouter();
+                break;
+            case 'connexion':
+                require_once RACINE . '/Controleur/controleurauth.php';
+                controleurauth::connexion();
+                break;
+            case 'deconnexion':
+                require_once RACINE . '/Controleur/controleurauth.php';
+                controleurauth::deconnexion();
                 break;
 
             case 'voyageurs':
