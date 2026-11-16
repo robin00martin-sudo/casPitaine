@@ -4,7 +4,7 @@ require_once RACINE . '/core/DAO/BateauVoyageurDAO.php';
 /**
  * Contrôleur des bateaux voyageurs.
  */
-class controleurVoyage
+class controleurvoyage
 {
     /**
      * Page de la liste des bateaux voyageurs (avec leurs équipements).
