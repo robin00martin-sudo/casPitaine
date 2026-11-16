@@ -1,26 +1,13 @@
 <?php
+// Point d'entrée unique : ?page=voyageurs (défaut) | fret | ajout | connexion | deconnexion
+ini_set('session.cookie_httponly', '1');
+ini_set('session.cookie_samesite', 'Lax');
+session_start();
 
 define('RACINE', __DIR__);
+require_once RACINE . '/Controleur/securite.php';
+require_once RACINE . '/Controleur/controleurPrincipal.php';
 
-require_once RACINE . '/Controleur/controleur.php';
+verifierCsrf();   // tout formulaire POST doit porter le jeton de la session
 
-// Page demandée dans l'URL : index.php?page=voyageurs, ?page=fret ou ?page=ajout
-// Sans paramètre (ou avec une valeur inconnue), on affiche les bateaux voyageurs.
-$page = $_GET['page'] ?? 'voyageurs';
-
-$controleur = new controleur();
-
-switch ($page) {
-    case 'fret':
-        $controleur->brochureFret();
-        break;
-
-    case 'ajout':
-        $controleur->ajouterBateau();
-        break;
-
-    case 'voyageurs':
-    default:
-        $controleur->brochureVoyageur();
-        break;
-}
+controleurPrincipal::dispatcher($_GET['page'] ?? 'voyageurs');
