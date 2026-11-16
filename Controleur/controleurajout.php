@@ -9,7 +9,7 @@ require_once RACINE . '/core/DAO/EquipementDAO.php';
  * Gère le formulaire : affichage, validation de la saisie, enregistrement
  * de l'image, puis appel du DAO correspondant au type de bateau.
  */
-class controleurAjout
+class controleurajout
 {
     // Limites du formulaire d'ajout
     const NOM_MAX = 50;                 // caractères (colonne BATEAU.nom)
