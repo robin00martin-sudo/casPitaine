@@ -4,7 +4,8 @@ require_once RACINE . '/modele/Connexion.php';
 require_once RACINE . '/core/Metier/BateauVoyageur.php';
 require_once RACINE . '/core/DAO/EquipementDAO.php';
 require_once RACINE . '/core/DAO/BateauDAO.php';
-//include RACINE . '/core/Metier/Collection.php';
+require_once RACINE . '/core/Metier/Collection.php';
+require_once RACINE . '/core/Metier/Equipement.php';
 
 /**
  * DAO de la classe BateauVoyageur.
@@ -28,34 +29,45 @@ class BateauVoyageurDAO
     public static function chargerLesBateauxVoyageurs()
     {
         $lesBateaux = new Collection();
-
         $cnx = Connexion::getConnexion();
 
-        $sql = "SELECT id, nom, longueur, largeur, vitesse, image
-                FROM BATEAU
-                WHERE type = 'v'
-                ORDER BY nom";
-
+        // Une SEULE requête : chaque bateau est répété une fois par équipement
+        // (LEFT JOIN : un bateau sans équipement apparaît quand même, une fois).
+        $sql = "SELECT b.id, b.nom, b.longueur, b.largeur, b.vitesse, b.image,
+                       e.id AS idEquip, e.lib
+                FROM BATEAU b
+                LEFT JOIN POSSEDER p   ON p.idBat = b.id
+                LEFT JOIN EQUIPEMENT e ON e.id = p.idEquip
+                WHERE b.type = 'v'
+                ORDER BY b.nom, e.lib";
         $jeu = $cnx->query($sql);
 
+        $courant = null;          // bateau en cours de construction
+        $equipements = null;
         while ($enreg = $jeu->fetch(PDO::FETCH_ASSOC)) {
-            // Pour chaque bateau, on charge sa collection d'équipements
-            $lesEquipements = EquipementDAO::chargerLesEquipements($enreg['id']);
-
-            $unBateauVoyageur = new BateauVoyageur(
-                $enreg['id'],
-                $enreg['nom'],
-                $enreg['longueur'],
-                $enreg['largeur'],
-                $enreg['vitesse'],
-                $enreg['image'],
-                $lesEquipements
-            );
-
-            $lesBateaux->ajouter($unBateauVoyageur);
+            if ($courant === null || $courant['id'] !== $enreg['id']) {
+                if ($courant !== null) {
+                    $lesBateaux->ajouter(self::construire($courant, $equipements));
+                }
+                $courant = $enreg;
+                $equipements = new Collection();
+            }
+            if ($enreg['idEquip'] !== null) {
+                $equipements->ajouter(new Equipement($enreg['idEquip'], $enreg['lib']));
+            }
         }
-
+        if ($courant !== null) {
+            $lesBateaux->ajouter(self::construire($courant, $equipements));
+        }
         return $lesBateaux;
+    }
+
+    private static function construire(array $enreg, Collection $lesEquipements)
+    {
+        return new BateauVoyageur(
+            $enreg['id'], $enreg['nom'], $enreg['longueur'], $enreg['largeur'],
+            $enreg['vitesse'], $enreg['image'], $lesEquipements
+        );
     }
 
     /**
@@ -98,8 +110,12 @@ class BateauVoyageurDAO
             $cnx->commit();
             return $id;
         } catch (Throwable $ex) {
-            $cnx->rollBack();
+            if ($cnx->inTransaction()) {
+                $cnx->rollBack();
+            }
             throw $ex;
+        } finally {
+            BateauDAO::deverrouillerIds($cnx);
         }
     }
 }

@@ -79,8 +79,12 @@ class BateauFretDAO
             $cnx->commit();
             return $id;
         } catch (Throwable $ex) {
-            $cnx->rollBack();
+            if ($cnx->inTransaction()) {
+                $cnx->rollBack();
+            }
             throw $ex;
+        } finally {
+            BateauDAO::deverrouillerIds($cnx);
         }
     }
 }
