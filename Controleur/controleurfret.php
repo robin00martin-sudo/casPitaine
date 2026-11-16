@@ -4,7 +4,7 @@ require_once RACINE . '/core/DAO/BateauFretDAO.php';
 /**
  * Contrôleur des bateaux de fret.
  */
-class controleurFret
+class controleurfret
 {
     /**
      * Page de la liste des bateaux de fret.
