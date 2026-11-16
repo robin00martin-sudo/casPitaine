@@ -31,6 +31,7 @@ $aria = fn($champ) => isset($erreurs[$champ]) ? ' aria-invalid="true" aria-descr
     <?php endif; ?>
 
     <form class="formulaire" method="post" action="index.php?page=ajout" enctype="multipart/form-data" novalidate>
+        <?= csrfChamp() ?>
 
         <fieldset>
             <legend>Informations générales</legend>

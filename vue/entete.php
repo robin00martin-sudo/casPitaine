@@ -37,6 +37,9 @@ $nb = fn($valeur) => str_replace('.', ',', (string) $valeur);
             <a href="index.php?page=ajout"
                <?= $pageActive === 'ajout' ? 'aria-current="page"' : '' ?>>Ajouter un bateau</a>
         </li>
+        <?php if (estAdmin()): ?>
+        <li><a href="index.php?page=deconnexion">Déconnexion</a></li>
+        <?php endif; ?>
     </ul>
 </nav>
 
