@@ -1,23 +1,25 @@
 # casPitaine
-Site web permetant de créer, lire des bateaux de voyage et de fret.
+Site web permettant de consulter et d'ajouter des bateaux **voyageurs** et de **fret** (PHP orienté objet, MVC, DAO).
 
-Le script SQL permet de mettre en place la BDD, le fichier contient aussi un jeu de test.
+- Brochure des bateaux voyageurs (photo, dimensions, vitesse, équipements) et liste des bateaux de fret.
+- Ajout d'un bateau (réservé à l'administrateur) avec validation serveur et envoi d'image sécurisé (JPEG/PNG/GIF/WebP, 2 Mo max).
 
-! IMPORTANT !
-  Une fois la BDD initialiser dans "modele/Connexion.php" veuillez renseigner vos info pour vous connecter à la BDD
-  (login, mot de passe, nom de la table, IP serveur si vous en avez une sinon localhost)
-! FIN IMPORTANT !
+## Installation
+1. Importer `casPitaine.sql` (script rejouable : crée la base `dbBat`, les tables et un jeu de test).
+2. Copier `config.example.php` en `config.local.php` (ignoré par Git : **ne jamais publier ce fichier**) et renseigner la connexion MySQL
+   (ou variables d'environnement `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`, `ADMIN_HASH`).
+3. Générer le hash du mot de passe administrateur et le placer dans `admin_hash` :
+   `php -r "echo password_hash('votre_mot_de_passe', PASSWORD_DEFAULT);"`.
+4. Le dossier `images/` doit être accessible en écriture ; `images/.htaccess` interdit l'exécution de scripts dans ce dossier.
 
+## Navigation
+`index.php?page=voyageurs` (défaut) · `fret` · `ajout` (connexion requise) · `connexion` · `deconnexion`.
 
-
-index.php -> Point d'entré.
-
-vue -> permet d'avoir un affichage les pages web et où se situe le CSS.
-
-modele/Connexion.php -> permet la connexion à la BDD.
-
-Core/Métier et Core/Dao -> sert à créer les objets en POO et à communiquer avec la BDD pour les données demandées.
-
-controleur -> permet de relier le Core avec les bonnes vues.
-
-images/ -> permet le stockage des photos pour les bateaux de voyages.
+## Organisation
+- `index.php` : point d'entrée (session, CSRF, dispatcher).
+- `modele/Connexion.php` : connexion PDO (singleton) et configuration.
+- `core/Metier/` : classes métier (`Bateau`, `BateauVoyageur`, `BateauFret`, `Equipement`, `Collection`).
+- `core/DAO/` : accès aux données (requêtes préparées, transactions, verrou sur la génération des identifiants).
+- `Controleur/` : `controleurPrincipal` (dispatcher), `controleurvoyage`, `controleurfret`, `controleurajout`, `controleurauth`, `securite.php`.
+- `vue/` : gabarit commun et pages (`brochure`, `fret`, `ajout`, `connexion`).
+- `images/` : photos des bateaux voyageurs.
