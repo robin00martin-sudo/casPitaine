@@ -7,10 +7,10 @@ class Connexion {
 
     public static function getConnexion(): PDO {
         if (self::$instance === null) {
-            $login   = "martinr";
-            $mdp     = "03052006";
-            $bd      = "martinr_dbBat";
-            $serveur = "192.168.20.15";
+            $login   = "";
+            $mdp     = "";
+            $bd      = "";
+            $serveur = "";
 
             self::$instance = new PDO(
                 "mysql:host=$serveur;dbname=$bd;charset=utf8",
