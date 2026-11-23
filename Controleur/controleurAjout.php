@@ -70,7 +70,7 @@ class controleurAjout
             $erreurs['image'] = "L'image n'a pas pu être enregistrée sur le serveur.";
         }
 
-        controleur::afficherVue('ajout', compact('saisie', 'erreurs', 'lesEquipements'));
+        controleurPrincipal::afficherVue('ajout', compact('saisie', 'erreurs', 'lesEquipements'));
     }
 
     // ------------------------------------------------------------------
