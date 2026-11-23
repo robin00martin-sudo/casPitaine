@@ -14,11 +14,6 @@ Projet en **PHP orienté objet**, architecture **MVC** avec une couche **DAO** :
   - redirection vers la liste du type ajouté.
 - Affichage à la française (virgule décimale), messages d'erreur clairs (codes HTTP 413, 422 et 500).
 
-## Prérequis
-- PHP 7.4 ou plus, avec l'extension `pdo_mysql` (aucune autre extension n'est nécessaire).
-- MySQL ou MariaDB.
-- Dans `php.ini` : `file_uploads = On`, `upload_max_filesize` et `post_max_size` d'au moins 2 Mo.
-
 ## Installation
 1. **Créer la base** (le script SQL ne la crée pas) : `CREATE DATABASE dbBat CHARACTER SET utf8mb4;`
 2. **Importer** `casPitaine.sql` dans cette base : il crée les tables `BATEAU`, `EQUIPEMENT` et `POSSEDER` et ajoute un jeu de test (3 bateaux voyageurs, 4 équipements, 9 associations).
