@@ -2,7 +2,7 @@
 
 define('RACINE', __DIR__);
 
-require_once RACINE . '/Controleur/controleurPrincipale.php';
+require_once RACINE . '/Controleur/controleurPrincipal.php';
 
 // Page demandée dans l'URL : index.php?page=voyageurs, ?page=fret ou ?page=ajout
 // Sans paramètre (ou avec une valeur inconnue), on affiche les bateaux voyageurs.
